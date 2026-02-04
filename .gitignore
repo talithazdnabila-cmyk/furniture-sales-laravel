@@ -23,3 +23,6 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 resources/views/user/products/show.blade.php
+app/Http/Controllers/User/TransactionController.php
+app/Http/Controllers/Admin/TransaksiController.php
+database/migrations/2026_02_04_000000_add_user_id_to_transactions_table.php
