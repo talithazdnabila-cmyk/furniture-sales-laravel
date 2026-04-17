@@ -154,7 +154,7 @@
                                 Go Back
                             </a>
                             <button type="submit" class="btn-save shadow-sm">
-                                Create Category
+                                Buat Kategori
                             </button>
                         </div>
                     </div>

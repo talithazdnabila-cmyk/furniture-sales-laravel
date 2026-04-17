@@ -13,6 +13,20 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+    $table->string('kode_transaksi');
+    $table->dateTime('tanggal');
+
+    $table->string('nama_pembeli');
+    $table->string('nama_penerima');
+    $table->string('no_telepon');
+    $table->text('alamat');
+    $table->text('catatan')->nullable();
+
+    $table->integer('total_harga');
+    $table->integer('grand_total')->default(0);  // ← PINDAHKAN KE SINI
+
+    $table->string('status')->default('pending');
             $table->timestamps();
         });
     }

@@ -211,7 +211,7 @@
         <div class="form-container">
             <span class="brand-logo">ZADA.CO</span>
 
-            <h1>Create Account</h1>
+            <h1>Buat Akun</h1>
             <div class="subtitle">Join us to experience timeless elegance.</div>
 
             <form method="POST" action="{{ route('register') }}">

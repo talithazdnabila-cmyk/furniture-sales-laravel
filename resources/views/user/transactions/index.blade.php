@@ -22,205 +22,327 @@
         margin: 0;
     }
 
+    /* ===== CONTAINER ===== */
     .history-container { 
-        max-width: 1000px; 
-        margin: 40px auto 100px; 
-        padding: 0 20px; 
+        max-width: 800px; 
+        margin: 120px auto 80px; 
+        padding: 0 15px; 
     }
 
-    /* REVISI: TOMBOL KEMBALI */
-    .nav-top {
-        margin-bottom: 40px;
-    }
+    .page-header { margin-bottom: 25px; }
+    .page-header h2 { font-family: 'Playfair Display', serif; font-size: 26px; color: #fff; margin: 0; }
 
-    .btn-back-gallery {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        text-decoration: none;
-        color: rgba(255,255,255,0.5);
-        font-size: 11px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        transition: 0.3s;
-        padding: 10px 0;
-    }
-
-    .btn-back-gallery:hover {
-        color: var(--accent-zada);
-        transform: translateX(-5px);
-    }
-
-    .page-header { margin-bottom: 50px; text-align: center; }
-    .page-header h2 { 
-        font-family: 'Playfair Display', serif; 
-        font-size: 42px; 
-        color: #fff; 
-        margin-bottom: 10px;
-    }
-    .page-header p { 
-        color: var(--accent-zada); 
-        font-size: 11px; 
-        text-transform: uppercase; 
-        letter-spacing: 4px; 
-        font-weight: 800; 
-    }
-
-    /* Transaction Card */
+    /* ===== TRX CARD (SHOPEE STYLE) ===== */
     .trx-card {
         background: var(--glass);
         border: 1px solid var(--glass-border);
-        border-radius: 24px;
-        padding: 35px;
-        margin-bottom: 30px;
-        transition: 0.3s;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        transition: 0.2s;
     }
-    .trx-card:hover { border-color: rgba(232, 184, 109, 0.3); }
 
-    .trx-header {
+    /* Top Bar: Store Name & Status */
+    .trx-top-bar {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-bottom: 20px;
-        border-bottom: 1px solid var(--glass-border);
-        margin-bottom: 25px;
+        padding: 10px 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
     }
 
-    .trx-id { font-family: 'Plus Jakarta Sans'; font-weight: 800; color: #fff; font-size: 14px; letter-spacing: 1px; }
-    
-    .status-badge {
-        padding: 6px 16px;
-        border-radius: 50px;
+    .brand-tag {
+        font-size: 11px;
+        font-weight: 800;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .status-text {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--accent-zada);
+        text-transform: uppercase;
+    }
+
+    /* Product Section */
+    .item-container {
+        padding: 15px;
+        display: flex;
+        gap: 12px;
+        border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .item-img-box {
+        width: 65px;
+        height: 65px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 6px;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    .item-img-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .item-info {
+        flex-grow: 1;
+    }
+
+    .item-name {
+        font-family: 'Playfair Display', serif;
+        font-size: 14px;
+        margin: 0 0 3px;
+        color: #fff;
+    }
+
+    .item-meta {
+        font-size: 11px;
+        color: rgba(255,255,255,0.4);
+        margin-bottom: 5px;
+    }
+
+    .item-price-qty {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+    }
+
+    /* Bottom Bar: Total & Actions */
+    .trx-bottom-bar {
+        padding: 15px;
+        background: rgba(255,255,255,0.01);
+    }
+
+    .total-info {
+        display: flex;
+        justify-content: flex-end;
+        align-items: baseline;
+        gap: 8px;
+        margin-bottom: 15px;
+    }
+
+    .total-label { font-size: 11px; color: rgba(255,255,255,0.5); }
+    .total-price { font-size: 16px; font-weight: 800; color: var(--accent-zada); }
+
+    /* Buttons Group */
+    .btn-group {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+    }
+
+    .btn-zada {
+        padding: 8px 20px;
+        border-radius: 4px;
         font-size: 10px;
         font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 1px;
+        text-decoration: none;
+        transition: 0.2s;
+        display: inline-block;
+        text-align: center;
     }
-    .status-pending { background: rgba(232, 184, 109, 0.1); color: var(--accent-zada); border: 1px solid var(--accent-zada); }
-    .status-completed { background: rgba(46, 204, 113, 0.1); color: #2ecc71; border: 1px solid #2ecc71; }
 
-    /* Shipping Info Section */
-    .shipping-box {
-        background: rgba(255,255,255,0.02);
-        border-radius: 15px;
-        padding: 20px;
-        margin-bottom: 25px;
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 20px;
-        align-items: start;
+    .btn-buy-again {
+        background: var(--accent-zada);
+        color: var(--bg-zada);
+        border: none;
     }
-    .shipping-icon { color: var(--accent-zada); font-size: 20px; }
-    .shipping-content h6 { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; color: var(--accent-zada); letter-spacing: 1px; }
-    .shipping-content p { margin: 0; font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.6; }
 
-    /* Product Items */
-    .item-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px 0;
-        border-bottom: 1px solid rgba(255,255,255,0.03);
+    .btn-buy-again:hover {
+        filter: brightness(1.1);
+        transform: translateY(-1px);
     }
-    .item-info h5 { font-family: 'Playfair Display', serif; font-size: 18px; margin: 0; color: #fff; }
-    .item-info span { font-size: 12px; color: rgba(255,255,255,0.4); }
-    
-    .item-price { text-align: right; font-weight: 700; color: #fff; }
 
-    /* Trx Footer */
-    .trx-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        margin-top: 25px;
+    .btn-outline {
+        border: 1px solid rgba(255,255,255,0.1);
+        color: rgba(255,255,255,0.7);
     }
-    .date-text { font-size: 12px; color: rgba(255,255,255,0.3); }
-    .grand-total-box { text-align: right; }
-    .grand-total-box label { display: block; font-size: 10px; text-transform: uppercase; color: var(--accent-zada); font-weight: 800; margin-bottom: 5px; }
-    .grand-total-box .price { font-size: 24px; font-weight: 800; color: var(--accent-zada); }
+
+    .btn-outline:hover {
+        border-color: var(--accent-zada);
+        color: var(--accent-zada);
+    }
 
     .empty-state {
         text-align: center;
-        padding: 100px 20px;
-        background: var(--glass);
-        border-radius: 30px;
+        padding: 50px 20px;
         border: 1px dashed var(--glass-border);
+        border-radius: 12px;
+        opacity: 0.6;
     }
+
+    /* Back Button */
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s;
+        margin-bottom: 20px;
+    }
+
+    .btn-back:hover {
+        color: var(--accent-zada);
+        transform: translateX(-3px);
+    }
+
 </style>
 
 <div class="history-container">
-    {{-- Tombol Kembali --}}
-    <div class="nav-top">
-        <a href="{{ route('user.products') }}" class="btn-back-gallery">
-            <i class="bi bi-arrow-left"></i> Kembali ke Galeri Produk
-        </a>
-    </div>
-
     <div class="page-header">
-        <p>Your Private Gallery</p>
-        <h2>Transaksi Saya</h2>
+        <h2>Pesanan Saya</h2>
     </div>
 
     @forelse ($transactions as $trx)
-        <div class="trx-card">
-            <div class="trx-header">
-                <div class="trx-id">
-                    <i class="bi bi-hash"></i> {{ $trx->kode_transaksi }}
+        <div class="trx-card" data-transaction-id="{{ $trx->id }}">
+            {{-- Header ala Shopee --}}
+            <div class="trx-top-bar">
+                <div class="brand-tag">
+                    <i class="bi bi-bag-check" style="color: var(--accent-zada)"></i> 
+                    ZADA.CO 
+                    <span style="opacity: 0.3; font-weight: 300;">#{{ $trx->kode_transaksi }}</span>
                 </div>
-                <div class="status-badge {{ $trx->status == 'pending' ? 'status-pending' : 'status-completed' }}">
-                    {{ $trx->status }}
-                </div>
-            </div>
-
-            <div class="shipping-box">
-                <div class="shipping-icon"><i class="bi bi-box-seam"></i></div>
-                <div class="shipping-content">
-                    <h6>Destination Details</h6>
-                    <p>
-                        <strong>{{ $trx->nama_penerima }}</strong><br>
-                        {{ $trx->no_telepon }}<br>
-                        {{ $trx->alamat }}
-                        @if($trx->catatan)
-                            <br><i style="font-size: 12px; opacity: 0.7;">Note: "{{ $trx->catatan }}"</i>
-                        @endif
-                    </p>
+                <div class="status-text" data-status-element>
+                    @if($trx->status == 'pending') Menunggu Verifikasi
+                    @elseif($trx->status == 'completed') Selesai
+                    @elseif($trx->status == 'shipped') Sedang Dikirim
+                    @elseif($trx->status == 'rejected') Ditolak
+                    @else {{ ucfirst($trx->status) }}
+                    @endif
                 </div>
             </div>
 
+            {{-- Product Items --}}
             @foreach ($trx->details as $detail)
-                <div class="item-row">
-                    <div class="item-info">
-                        <h5>{{ $detail->product->name ?? 'ZADA Masterpiece' }}</h5>
-                        <span>{{ $detail->qty }} Unit &times; Rp {{ number_format($detail->product->price ?? 0, 0, ',', '.') }}</span>
+                <div class="item-container">
+                    <div class="item-img-box">
+                        @if($detail->product && $detail->product->image)
+                            <img src="{{ asset('storage/' . $detail->product->image) }}" alt="Product">
+                        @else
+                            <div style="height:100%; display:flex; align-items:center; justify-content:center; opacity:0.2;">
+                                <i class="bi bi-image"></i>
+                            </div>
+                        @endif
                     </div>
-                    <div class="item-price">
-                        Rp {{ number_format($detail->qty * ($detail->product->price ?? 0), 0, ',', '.') }}
+                    <div class="item-info">
+                        <h5 class="item-name">{{ $detail->product->name ?? 'ZADA Masterpiece' }}</h5>
+                        <div class="item-meta">Timeless Collection</div>
+                        <div class="item-price-qty">
+                            <span>x{{ $detail->qty }}</span>
+                            <span style="color: var(--accent-zada)">Rp{{ number_format($detail->product->price ?? 0, 0, ',', '.') }}</span>
+                        </div>
                     </div>
                 </div>
             @endforeach
 
-            <div class="trx-footer">
-                <div class="date-text">
-                    <i class="bi bi-calendar3"></i> {{ $trx->created_at->format('d F Y') }} &bull; {{ $trx->created_at->format('H:i') }}
+            {{-- Footer ala Shopee --}}
+            <div class="trx-bottom-bar">
+                <div class="total-info">
+                    <span class="total-label">Total Pesanan:</span>
+                    <span class="total-price">Rp{{ number_format($trx->grand_total, 0, ',', '.') }}</span>
                 </div>
-                <div class="grand-total-box">
-                    <label>Total Investment</label>
-                    <div class="price">Rp {{ number_format($trx->grand_total, 0, ',', '.') }}</div>
+                
+                <div class="btn-group">
+                    {{-- Tombol Beli Lagi --}}
+                    @if($trx->details->first() && $trx->details->first()->product)
+                        <a href="{{ route('products.show', $trx->details->first()->product->id) }}" class="btn-zada btn-buy-again">
+                            Beli Lagi
+                        </a>
+                    @endif
+                    
+                    <a href="{{ route('user.transactions.show', $trx->id) }}" class="btn-zada btn-outline">
+                        Lihat Detail
+                    </a>
                 </div>
             </div>
         </div>
     @empty
         <div class="empty-state">
-            <i class="bi bi-bag-x" style="font-size: 48px; color: var(--glass-border); margin-bottom: 20px; display: block;"></i>
-            <h4 style="font-family: 'Playfair Display'; margin-bottom: 10px;">Belum ada akuisisi</h4>
-            <p style="opacity: 0.5; font-size: 14px;">Mulai bangun koleksi furnitur mewah Anda hari ini.</p>
-            <a href="{{ route('user.products') }}" style="display: inline-block; margin-top: 20px; color: var(--accent-zada); text-decoration: none; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 2px;">Jelajahi Koleksi &rarr;</a>
+            <i class="bi bi-cart-x" style="font-size: 32px; margin-bottom: 10px; display: block;"></i>
+            <p>Belum ada transaksi.</p>
+            <a href="{{ url('/products') }}" style="color:var(--accent-zada); text-decoration:none; font-size:11px; font-weight:800;">MULAI BELANJA</a>
         </div>
     @endforelse
 </div>
 
-<footer style="text-align: center; padding: 60px 0; opacity: 0.2; font-size: 10px; letter-spacing: 2px; text-transform: uppercase;">
-    &copy; 2026 ZADA.CO LUXURY FURNITURE &bull; Confidential Archive
+<footer style="text-align: center; padding: 40px 0; opacity: 0.2; font-size: 8px; letter-spacing: 2px;">
+    &copy; 2026 ZADA.CO LUXURY ARCHIVE
 </footer>
+
+<script>
+// Auto-polling untuk status semua transaksi real-time
+document.addEventListener('DOMContentLoaded', function() {
+    const transactionCards = document.querySelectorAll('[data-transaction-id]');
+    
+    // Fungsi untuk update status transaksi
+    function checkAllStatuses() {
+        transactionCards.forEach(card => {
+            const transactionId = card.getAttribute('data-transaction-id');
+            const statusElement = card.querySelector('[data-status-element]');
+            
+            if (!statusElement) return;
+            
+            fetch(`/api/transaksi/${transactionId}/status`)
+                .then(response => response.json())
+                .then(data => {
+                    const newStatus = data.status;
+                    const statusTexts = {
+                        'pending': 'Menunggu Verifikasi',
+                        'shipped': 'Sedang Dikirim',
+                        'completed': 'Selesai',
+                        'rejected': 'Ditolak'
+                    };
+                    
+                    const displayText = statusTexts[newStatus] || newStatus;
+                    
+                    if (statusElement.textContent.trim() !== displayText) {
+                        // Ada perubahan status!
+                        statusElement.textContent = displayText;
+                        
+                        // Tambahkan animasi highlight
+                        card.style.animation = 'none';
+                        setTimeout(() => {
+                            card.style.animation = 'statusUpdate 0.6s ease-out';
+                        }, 10);
+                    }
+                })
+                .catch(error => console.error('Error checking status:', error));
+        });
+    }
+    
+    // Poll status setiap 5 detik
+    setInterval(checkAllStatuses, 5000);
+});
+
+// CSS untuk animasi
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes statusUpdate {
+        0% {
+            background-color: rgba(232, 184, 109, 0.1);
+            transform: scale(1);
+        }
+        50% {
+            background-color: rgba(232, 184, 109, 0.2);
+            transform: scale(1.01);
+        }
+        100% {
+            background-color: transparent;
+            transform: scale(1);
+        }
+    }
+`;
+document.head.appendChild(style);
+</script>
 @endsection

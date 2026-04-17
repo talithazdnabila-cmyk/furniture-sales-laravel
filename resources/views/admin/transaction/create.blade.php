@@ -96,7 +96,7 @@
                                 </td>
                                 <td>
                                     <div class="fw-bold text-dark">{{ $trx->nama_pembeli ?? ($trx->user->name ?? 'Guest Customer') }}</div>
-                                    <small class="text-muted">Status: <span class="text-warning">Pending Review</span></small>
+                                    <small class="text-muted">Status: <span class="text-warning">Menunggu Verifikasi</span></small>
                                 </td>
                                 <td>
                                     <span class="fw-bold text-dark">Rp {{ number_format($trx->total_harga, 0, ',', '.') }}</span>

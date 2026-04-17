@@ -115,14 +115,6 @@
         </a>
     </div>
 
-    @if (session('success'))
-        <div class="alert alert-success border-0 shadow-sm mb-4 p-3 d-flex align-items-center" style="border-radius: 10px; background: #e6fcf5; color: #0ca678;">
-            <i class="fas fa-check-circle me-3 fa-lg"></i>
-            <div>{{ session('success') }}</div>
-            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
-
     <div class="card card-luxury shadow-sm">
         <div class="card-body p-0">
             <div class="table-responsive">

@@ -16,13 +16,18 @@ use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\TransaksiController as AdminTransaksiController;
+use App\Http\Controllers\Admin\PengirimanController;
 use App\Http\Controllers\Admin\ProfileController;
+
+// ================= PUBLIC =================
+use App\Http\Controllers\Public\ProductController as PublicProductController;
 
 // ================= USER =================
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\ProductController as UserProductController;
 use App\Http\Controllers\User\TransactionController;
 use App\Http\Controllers\User\CheckoutController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,32 +35,45 @@ use App\Http\Controllers\User\CheckoutController;
 |--------------------------------------------------------------------------
 */
 Route::get('/', function () {
+    // Jika user sudah login, redirect ke dashboard user
+    if (auth()->check()) {
+        return redirect()->route('user.dashboard');
+    }
     $products = \App\Models\Product::with('category')->limit(4)->get();
     return view('welcome', compact('products'));
 })->name('home');
 
 /*
 |--------------------------------------------------------------------------
-| USER (CUSTOMER)
+| PUBLIC PRODUCTS (untuk guest & authenticated users)
+|--------------------------------------------------------------------------
+*/
+Route::get('/products', [\App\Http\Controllers\Public\ProductController::class, 'index'])->name('products');
+
+Route::get('/products/{id}', [PublicProductController::class, 'show'])
+    ->name('products.show');
+
+/*
+|--------------------------------------------------------------------------
+| USER (CUSTOMER) - Protected Routes
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth'])->group(function () {
 
     // Dashboard user
-    Route::get('/dashboard', [UserDashboardController::class, 'index'])
+    Route::get('/user/dashboard', [UserDashboardController::class, 'index'])
         ->name('user.dashboard');
 
-    // Semua produk
-    Route::get('/products', [UserProductController::class, 'index'])
+    /*
+    |--------------------------------------------------------------------------
+    | USER PRODUCTS
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/user/products', [UserProductController::class, 'index'])
         ->name('user.products');
 
-    // Detail produk
-    Route::get('/products/{id}', [UserProductController::class, 'show'])
+    Route::get('/user/products/{id}', [UserProductController::class, 'show'])
         ->name('user.products.show');
-
-    // Produk berdasarkan kategori
-    Route::get('/categories/{id}', [UserProductController::class, 'byCategory'])
-        ->name('user.categories.show');
 
     /*
     |--------------------------------------------------------------------------
@@ -64,20 +82,45 @@ Route::middleware(['auth'])->group(function () {
     */
 
     // halaman checkout (GET)
-    Route::get('/checkout', [TransactionController::class, 'showCheckout'])
+    Route::get('/user/checkout', [TransactionController::class, 'showCheckout'])
         ->name('user.checkout.index');
 
     // proses checkout (POST dari detail produk)
-    Route::post('/checkout', [TransactionController::class, 'checkout'])
+    Route::post('/user/checkout', [TransactionController::class, 'checkout'])
         ->name('user.checkout');
 
     // konfirmasi & simpan transaksi
-    Route::post('/checkout/confirm', [TransactionController::class, 'store'])
+    Route::post('/user/checkout/confirm', [TransactionController::class, 'store'])
         ->name('user.checkout.confirm');
-});
 
-Route::get('/user/transaksi', [TransactionController::class, 'Index'])
-    ->name('user.transactions.index');
+    // list & detail transaksi
+    Route::get('/user/transaksi', [TransactionController::class, 'index'])
+        ->name('user.transactions.index');
+    Route::get('/user/transaksi/{id}', [TransactionController::class, 'show'])
+        ->name('user.transactions.show');
+    Route::post('/user/transaksi/{id}/upload-payment-proof', [TransactionController::class, 'uploadPaymentProof'])
+        ->name('user.transactions.upload-payment-proof');
+
+    // API untuk polling status transaksi real-time
+    Route::get('/api/transaksi/{id}/status', [TransactionController::class, 'getStatus'])
+        ->name('api.transaction.status');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CART
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('cart')->name('cart.')->group(function () {
+        Route::get('/', [CartController::class, 'index'])->name('index');
+        Route::post('/', [CartController::class, 'store'])->name('store');
+        Route::put('/{id}', [CartController::class, 'update'])->name('update');
+        Route::delete('/{id}', [CartController::class, 'destroy'])->name('destroy');
+        Route::post('/clear', [CartController::class, 'clear'])->name('clear');
+        Route::post('/toggle-selected', [CartController::class, 'toggleSelected'])->name('toggleSelected');
+        Route::post('/select-all', [CartController::class, 'selectAll'])->name('selectAll');
+    });
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -89,19 +132,17 @@ Route::prefix('admin')
     ->middleware(['auth', 'admin'])
     ->group(function () {
         
-
         // Dashboard admin
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])
             ->name('dashboard');
 
-Route::get('/profile', [ProfileController::class, 'index'])
-    ->name('profile.index');
-
-Route::post('/profile/update', [ProfileController::class, 'update'])
-    ->name('profile.update');
-
-Route::delete('/profile/delete', [ProfileController::class, 'destroy'])
-    ->name('profile.delete');
+        // Profile admin
+        Route::get('/profile', [ProfileController::class, 'index'])
+            ->name('profile.index');
+        Route::post('/profile/update', [ProfileController::class, 'update'])
+            ->name('profile.update');
+        Route::delete('/profile/delete', [ProfileController::class, 'destroy'])
+            ->name('profile.delete');
 
         /*
         |--------------------------------------------------------------------------
@@ -130,8 +171,7 @@ Route::delete('/profile/delete', [ProfileController::class, 'destroy'])
             Route::put('/{id}', [CategoryController::class, 'update'])->name('update');
             Route::delete('/{id}', [CategoryController::class, 'destroy'])->name('destroy');
             Route::get('/{id}/products', [CategoryController::class, 'showProducts'])
-            ->name('products');
-
+                ->name('products');
         });
 
         /*
@@ -166,12 +206,27 @@ Route::delete('/profile/delete', [ProfileController::class, 'destroy'])
         |--------------------------------------------------------------------------
         */
         Route::resource('transaksi', AdminTransaksiController::class);
-
         Route::post('/transaksi/{id}/konfirmasi', [AdminTransaksiController::class, 'konfirmasi'])
             ->name('transaksi.konfirmasi');
-
         Route::post('/transaksi/{id}/tolak', [AdminTransaksiController::class, 'tolak'])
             ->name('transaksi.tolak');
+        Route::post('/transaksi/{id}/selesai', [AdminTransaksiController::class, 'selesai'])
+            ->name('transaksi.selesai');
+        Route::get('/transaksi/payment-proofs/list', [AdminTransaksiController::class, 'paymentProofs'])
+            ->name('transaksi.payment-proofs');
+        Route::post('/transaksi/{id}/approve-payment-proof', [AdminTransaksiController::class, 'approvePaymentProof'])
+            ->name('transaksi.approve-payment-proof');
+        Route::post('/transaksi/{id}/reject-payment-proof', [AdminTransaksiController::class, 'rejectPaymentProof'])
+            ->name('transaksi.reject-payment-proof');
+
+        /*
+        |--------------------------------------------------------------------------
+        | PENGIRIMAN ADMIN
+        |--------------------------------------------------------------------------
+        */
+        Route::resource('pengiriman', PengirimanController::class);
+        Route::post('/pengiriman/{id}/update-status', [PengirimanController::class, 'updateStatus'])
+            ->name('pengiriman.updateStatus');
 
         /*
         |--------------------------------------------------------------------------

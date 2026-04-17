@@ -6,20 +6,31 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Supplier;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with('category')->latest()->get();
-        return view('admin.products.index', compact('products'));
+        $search = $request->input('search');
+        
+        $query = Product::with('category');
+        
+        if ($search) {
+            $query->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('description', 'like', '%' . $search . '%');
+        }
+        
+        $products = $query->latest()->get();
+        return view('admin.products.index', compact('products', 'search'));
     }
 
     public function create()
     {
         $categories = Category::all();
-        return view('admin.products.create', compact('categories'));
+        $suppliers = Supplier::where('is_active', 1)->get();
+        return view('admin.products.create', compact('categories', 'suppliers'));
     }
 
     public function store(Request $request)
@@ -39,6 +50,7 @@ class ProductController extends Controller
         // SIMPAN DATA PRODUK
         Product::create([
             'category_id' => $request->category_id,
+            'supplier_id' => $request->supplier_id,
             'name'        => $request->name,
             'price'       => $request->price,
             'stock'       => $request->stock,
@@ -55,8 +67,9 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $categories = Category::all();
+        $suppliers = Supplier::where('is_active', 1)->get();
 
-        return view('admin.products.edit', compact('product', 'categories'));
+        return view('admin.products.edit', compact('product', 'categories', 'suppliers'));
     }
 
     public function update(Request $request, $id)
@@ -74,6 +87,7 @@ class ProductController extends Controller
 
         $data = [
             'category_id' => $request->category_id,
+            'supplier_id' => $request->supplier_id,
             'name'        => $request->name,
             'price'       => $request->price,
             'stock'       => $request->stock,

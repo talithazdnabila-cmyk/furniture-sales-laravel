@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Payment Approval - ZADA.CO')
+@section('title', 'Verifikasi Pembayaran - ZADA.CO')
 
 @section('content')
 
@@ -152,12 +152,6 @@
         </span>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success border-0 shadow-sm mb-4" style="border-radius: 12px; font-weight: 600;">
-            <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
-        </div>
-    @endif
-
     @forelse($transaksiPending as $trx)
     <div class="transaction-card">
         <div class="transaction-header">
@@ -175,7 +169,7 @@
             <div class="info-grid">
                 {{-- Shipping Info --}}
                 <div class="info-box">
-                    <h6><i class="fas fa-truck"></i> Shipping Information</h6>
+                    <h6><i class="fas fa-truck"></i> Informasi Pengiriman</h6>
                     <p><strong>Penerima:</strong> {{ $trx->nama_penerima }}</p>
                     <p><strong>Kontak:</strong> {{ $trx->no_telepon }}</p>
                     <p><strong>Alamat:</strong> {{ $trx->alamat }}</p>
@@ -186,13 +180,13 @@
 
                 {{-- Product Summary --}}
                 <div class="info-box">
-                    <h6><i class="fas fa-shopping-bag"></i> Order Summary</h6>
+                    <h6><i class="fas fa-shopping-bag"></i> Ringkasan Pesanan</h6>
                     <table class="product-list">
                         <thead>
                             <tr>
-                                <th>Item</th>
-                                <th class="text-center">Qty</th>
-                                <th class="text-end">Price</th>
+                                <th>Barang</th>
+                                <th class="text-center">Jml</th>
+                                <th class="text-end">Harga</th>
                             </tr>
                         </thead>
                         <tbody>

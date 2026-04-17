@@ -94,6 +94,36 @@
         border-radius: 8px;
         font-weight: 600;
     }
+
+    /* Search Form Styling */
+    .form-control {
+        border: 1px solid #eceef0;
+        border-radius: 8px;
+        padding: 10px 15px;
+        font-size: 13px;
+        transition: 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: var(--zada-gold);
+        box-shadow: 0 0 0 0.2rem rgba(232, 184, 109, 0.15);
+    }
+
+    .btn-secondary {
+        background: #f8f9fa;
+        color: var(--zada-dark);
+        border: 1px solid #eceef0;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .btn-secondary:hover {
+        background: #e9ecef;
+        border-color: #999;
+    }
 </style>
 
 <div class="container-fluid px-4 py-4">
@@ -107,12 +137,22 @@
         </a>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-zada alert-dismissible fade show p-3 mb-4" role="alert">
-            <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    {{-- SEARCH FORM --}}
+    <div class="card card-luxury shadow-sm mb-4">
+        <div class="card-body p-3">
+            <form method="GET" action="{{ route('admin.categories.index') }}" class="d-flex gap-2">
+                <div class="flex-grow-1">
+                    <input type="text" name="search" class="form-control" placeholder="Cari kategori berdasarkan nama..." value="{{ $search ?? '' }}">
+                </div>
+                <button type="submit" class="btn btn-add">
+                    <i class="fas fa-search me-2"></i> Cari
+                </button>
+                <a href="{{ route('admin.categories.index') }}" class="btn btn-secondary">
+                    <i class="fas fa-redo me-2"></i> Reset
+                </a>
+            </form>
         </div>
-    @endif
+    </div>
 
     <div class="card card-luxury shadow-sm">
         <div class="card-body p-0">

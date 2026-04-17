@@ -139,7 +139,7 @@
                                         @php
                                             $statusClass = 'status-pending';
                                             if(strtolower($t->status) == 'success' || strtolower($t->status) == 'selesai') $statusClass = 'status-success';
-                                            if(strtolower($t->status) == 'failed' || strtolower($t->status) == 'batal') $statusClass = 'status-failed';
+                                            if(strtolower($t->status) == 'failed' || strtolower($t->status) == 'batal' || strtolower($t->status) == 'rejected') $statusClass = 'status-failed';
                                         @endphp
                                         <span class="status-badge {{ $statusClass }}">
                                             {{ $t->status }}

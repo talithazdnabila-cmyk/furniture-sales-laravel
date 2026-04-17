@@ -12,7 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('categories', function (Blueprint $table) {
-            $table->string('image')->nullable()->after('name');
+            // Drop kolom image dan description
+            if (Schema::hasColumn('categories', 'image')) {
+                $table->dropColumn('image');
+            }
+            if (Schema::hasColumn('categories', 'description')) {
+                $table->dropColumn('description');
+            }
         });
     }
 
@@ -22,7 +28,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('categories', function (Blueprint $table) {
-            $table->dropColumn('image');
+            // Restore kolom saat rollback
+            $table->text('description')->nullable()->after('name');
+            $table->string('image')->nullable()->after('description');
         });
     }
 };

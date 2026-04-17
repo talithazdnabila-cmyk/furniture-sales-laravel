@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            $table->string('kode_transaksi')->after('id');
+        Schema::table('users', function (Blueprint $table) {
+            $table->enum('role', ['customer', 'admin'])->default('customer')->change();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            $table->dropColumn('kode_transaksi');
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('role')->default('customer')->change();
         });
     }
 };

@@ -8,11 +8,19 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::withCount('products')->get();
+        $search = $request->input('search');
+        
+        $query = Category::withCount('products');
+        
+        if ($search) {
+            $query->where('name', 'like', '%' . $search . '%');
+        }
+        
+        $categories = $query->get();
 
-        return view('admin.categories.index', compact('categories'));
+        return view('admin.categories.index', compact('categories', 'search'));
     }
 
     public function showProducts($id)

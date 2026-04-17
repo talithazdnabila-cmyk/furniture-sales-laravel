@@ -1,205 +1,304 @@
 @extends('layouts.admin')
 
-@section('title', 'Manajemen Produk - ZADA.CO')
+@section('title', 'Katalog Produk - ZADA.CO')
 
 @section('content')
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
 <style>
     :root {
-        --zada-gold: #e8b86d;
-        --zada-dark: #111;
+        --zada-gold: #c5a059;
+        --zada-dark: #1a1a1a;
+        --border-color: #eceef0;
+        --bg-body: #f8f9fa;
     }
 
-    .page-title {
-        font-weight: 800;
-        letter-spacing: -1px;
-        color: var(--zada-dark);
+    body { 
+        background-color: var(--bg-body); 
+        color: #333; 
+        font-family: 'Inter', sans-serif; 
+    }
+    
+    /* Typography Match Dashboard */
+    .page-title { 
+        font-family: 'Playfair Display', serif; 
+        font-weight: 700; 
+        color: var(--zada-dark); 
     }
 
+    .label-xs { 
+        font-size: 11px; 
+        text-transform: uppercase; 
+        letter-spacing: 0.8px; 
+        font-weight: 700; 
+        color: #888; 
+    }
+
+    /* Card Luxury Styling */
     .card-luxury {
-        border: none;
-        border-radius: 15px;
-        background: #fff;
+        background: white; 
+        border: 1px solid var(--border-color);
+        border-radius: 12px; 
         overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
 
-    /* Table Styling */
-    .table thead th {
-        background-color: #fcfcfc;
-        text-transform: uppercase;
-        font-size: 11px;
+    /* Table Styling Match Dashboard */
+    .table-pro thead th {
+        background: #fbfbfc; 
+        border-bottom: 1px solid var(--border-color);
+        color: #666; 
+        font-size: 11px; 
+        font-weight: 700; 
+        padding: 18px 15px;
+        text-transform: uppercase; 
         letter-spacing: 1px;
-        font-weight: 700;
-        color: #888;
-        border-top: none;
-        padding: 20px 15px;
     }
 
-    .table tbody td {
-        padding: 20px 15px;
-        vertical-align: middle;
-        font-size: 14px;
-        border-bottom: 1px solid #f8f8f8;
+    .table-pro tbody td { 
+        padding: 15px; 
+        border-bottom: 1px solid #f8f9fa; 
+        font-size: 13px; 
+        vertical-align: middle; 
     }
 
-    /* Product Image Styling */
-    .product-img-wrapper {
-        width: 60px;
-        height: 60px;
+    /* Product Image Frame */
+    .product-frame {
+        width: 54px; 
+        height: 54px; 
         border-radius: 10px;
-        overflow: hidden;
+        overflow: hidden; 
         background: #f5f5f5;
-        border: 1px solid #eee;
-    }
-
-    /* Badge Custom */
-    .badge-category {
-        background: #f0f0f0;
-        color: #555;
-        font-weight: 600;
-        padding: 6px 12px;
-        border-radius: 6px;
-        font-size: 11px;
-    }
-
-    .badge-stock {
-        font-weight: 700;
-        font-size: 12px;
-    }
-
-    .text-price {
-        font-weight: 700;
-        color: var(--zada-dark);
-    }
-
-    /* Action Buttons */
-    .btn-add {
-        background: var(--zada-dark);
-        color: white;
-        padding: 10px 24px;
-        border-radius: 8px;
-        font-weight: 600;
-        transition: all 0.3s;
-    }
-    .btn-add:hover {
-        background: var(--zada-gold);
-        color: var(--zada-dark);
-        transform: translateY(-2px);
-    }
-
-    .action-btn {
-        width: 35px;
-        height: 35px;
-        display: inline-flex;
+        border: 1px solid var(--border-color);
+        display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 8px;
-        transition: 0.2s;
-        text-decoration: none;
     }
-    .btn-edit-soft { background: #fff4e5; color: #b07219; }
-    .btn-edit-soft:hover { background: #e8b86d; color: white; }
-    .btn-delete-soft { background: #fff0f0; color: #e03131; border: none; }
-    .btn-delete-soft:hover { background: #fa5252; color: white; }
+
+    /* Status & Badge Styling */
+    .badge-category {
+        background: #eff6ff; 
+        color: #1e40af; 
+        border: 1px solid #bfdbfe;
+        font-size: 10px; 
+        font-weight: 700; 
+        padding: 4px 10px; 
+        border-radius: 6px;
+        text-transform: uppercase;
+    }
+
+    .low-stock-alert {
+        background: #fff0f0; 
+        color: #e03131; 
+        border: 1px solid #ffe3e3;
+        font-size: 9px; 
+        font-weight: 800; 
+        padding: 2px 6px; 
+        border-radius: 4px;
+        display: inline-block;
+        margin-top: 4px;
+    }
+
+    /* Button Actions Styling */
+    .btn-zada-dark {
+        background: var(--zada-dark); 
+        color: white; 
+        border: none;
+        padding: 10px 20px; 
+        border-radius: 8px; 
+        font-size: 11px;
+        font-weight: 700; 
+        text-transform: uppercase; 
+        letter-spacing: 1px;
+        transition: all 0.3s;
+    }
+
+    .btn-zada-dark:hover { 
+        background: var(--zada-gold); 
+        color: white; 
+        transform: translateY(-1px); 
+    }
+
+    /* Action Table Buttons */
+    .btn-action-edit {
+        background: #fff9eb; 
+        color: #946c00; 
+        border: 1px solid #ffecb5;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 6px 12px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+    .btn-action-edit:hover {
+        background: #c5a059;
+        color: white;
+        border-color: #c5a059;
+    }
+
+    .btn-action-delete {
+        background: #fff0f0; 
+        color: #e03131; 
+        border: 1px solid #ffe3e3;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 6px 12px;
+        border-radius: 6px;
+        transition: 0.2s;
+    }
+
+    .btn-action-delete:hover {
+        background: #e03131;
+        color: white;
+        border-color: #e03131;
+    }
+
+    /* Search Form Styling */
+    .form-control {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 10px 15px;
+        font-size: 13px;
+        transition: 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: var(--zada-gold);
+        box-shadow: 0 0 0 0.2rem rgba(197, 160, 89, 0.15);
+    }
+
+    .btn-secondary {
+        background: #f8f9fa;
+        color: var(--zada-dark);
+        border: 1px solid var(--border-color);
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: 0.3s;
+    }
+
+    .btn-secondary:hover {
+        background: #e9ecef;
+        border-color: #999;
+    }
 </style>
 
 <div class="container-fluid px-4 py-4">
+    {{-- HEADER --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h3 class="page-title m-0">Data Produk</h3>
-            <p class="text-muted small m-0">Kelola katalog furnitur eksklusif Anda.</p>
+            <h3 class="page-title m-0">Katalog Produk</h3>
+            <p class="text-muted small m-0">Manajemen Inventaris ZADA.CO Intelligence</p>
         </div>
-        <a href="{{ route('admin.products.create') }}" class="btn btn-add shadow-sm">
-            <i class="fas fa-plus me-2"></i> Tambah Produk
+        <a href="{{ route('admin.products.create') }}" class="btn btn-zada-dark shadow-sm">
+            <i class="bi bi-plus-lg me-2"></i> TAMBAH PRODUK BARU
         </a>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success border-0 shadow-sm mb-4 p-3" style="border-radius: 10px; background: #e6fcf5; color: #0ca678;">
-            <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
+    {{-- SEARCH FORM --}}
+    <div class="card card-luxury shadow-sm mb-4">
+        <div class="card-body p-3">
+            <form method="GET" action="{{ route('admin.products.index') }}" class="d-flex gap-2">
+                <div class="flex-grow-1">
+                    <input type="text" name="search" class="form-control" placeholder="Cari produk berdasarkan nama atau deskripsi..." value="{{ $search ?? '' }}">
+                </div>
+                <button type="submit" class="btn btn-zada-dark">
+                    <i class="bi bi-search me-2"></i> Cari
+                </button>
+                <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">
+                    <i class="bi bi-x-circle me-2"></i> Reset
+                </a>
+            </form>
         </div>
-    @endif
+    </div>
 
-    <div class="card card-luxury shadow-sm">
+    {{-- MAIN DATA TABLE --}}
+    <div class="card card-luxury">
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table mb-0">
+                <table class="table table-pro mb-0">
                     <thead>
                         <tr>
-                            <th class="text-center" width="60">#</th>
-                            <th width="80">Foto</th>
-                            <th>Info Produk</th>
+                            <th class="text-center" width="60">No</th>
+                            <th width="80">Preview</th>
+                            <th>Detail Produk</th>
                             <th>Kategori</th>
-                            <th>Harga</th>
+                            <th>Supplier</th>
+                            <th>Harga Jual</th>
                             <th class="text-center">Stok</th>
-                            <th class="text-end">Aksi</th>
+                            <th class="text-end">Opsi Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($products as $product)
                             <tr>
-                                <td class="text-center text-muted font-monospace">{{ $loop->iteration }}</td>
+                                <td class="text-center text-muted fw-bold" style="font-size: 11px;">
+                                    {{ $loop->iteration }}
+                                </td>
                                 
-                                {{-- FOTO PRODUK --}}
                                 <td>
-                                    <div class="product-img-wrapper">
+                                    <div class="product-frame shadow-sm">
                                         @if ($product->image)
                                             <img src="{{ asset('storage/' . $product->image) }}" 
                                                  alt="{{ $product->name }}" 
                                                  style="width: 100%; height: 100%; object-fit: cover;">
                                         @else
-                                            <div class="d-flex align-items-center justify-content-center h-100 text-muted">
-                                                <i class="fas fa-image"></i>
-                                            </div>
+                                            <i class="bi bi-image text-muted" style="font-size: 18px;"></i>
                                         @endif
                                     </div>
                                 </td>
 
-                                {{-- NAMA PRODUK --}}
                                 <td>
-                                    <div class="fw-bold text-dark">{{ $product->name }}</div>
-                                    <small class="text-muted">ID: #PROD-{{ $product->id }}</small>
+                                    <div class="fw-bold text-dark" style="font-size: 14px; letter-spacing: -0.3px;">{{ $product->name }}</div>
+                                    <div class="label-xs" style="font-size: 9px; color: #aaa; margin-top: 2px;">ID: ZDA-PRO-{{ $product->id }}</div>
                                 </td>
 
-                                {{-- KATEGORI --}}
                                 <td>
                                     <span class="badge-category">
                                         {{ $product->category->name ?? 'Tanpa Kategori' }}
                                     </span>
                                 </td>
 
-                                {{-- HARGA --}}
-                                <td class="text-price">
+                                <td>
+                                    <span class="badge-category" style="background: #fef3e5; color: #946c00; border-color: #ffd99d;">
+                                        {{ $product->supplier->name ?? 'Belum ditentukan' }}
+                                    </span>
+                                </td>
+
+                                <td class="fw-bold text-dark">
                                     Rp {{ number_format($product->price, 0, ',', '.') }}
                                 </td>
 
-                                {{-- STOK --}}
                                 <td class="text-center">
-                                    <span class="badge-stock {{ $product->stock <= 5 ? 'text-danger' : 'text-dark' }}">
-                                        {{ $product->stock }} <small class="text-muted">unit</small>
-                                    </span>
+                                    <div class="fw-bold {{ $product->stock <= 5 ? 'text-danger' : 'text-dark' }}" style="font-size: 14px;">
+                                        {{ $product->stock }} <span class="text-muted fw-normal" style="font-size: 11px;">unit</span>
+                                    </div>
                                     @if($product->stock <= 5)
-                                        <div style="font-size: 9px; text-transform: uppercase; font-weight: 800;" class="text-danger">Low Stock</div>
+                                        <span class="low-stock-alert">STOK KRITIS</span>
                                     @endif
                                 </td>
 
-                                {{-- AKSI --}}
-                                <td class="text-end">
+                                <td class="text-end px-4">
                                     <div class="d-flex justify-content-end gap-2">
+                                        {{-- TOMBOL EDIT --}}
                                         <a href="{{ route('admin.products.edit', $product->id) }}" 
-                                           class="action-btn btn-edit-soft" title="Edit">
-                                            <i class="fas fa-edit"></i>
+                                           class="btn btn-action-edit d-flex align-items-center">
+                                            <i class="bi bi-pencil-square me-1"></i> EDIT
                                         </a>
 
+                                        {{-- TOMBOL HAPUS --}}
                                         <form action="{{ route('admin.products.destroy', $product->id) }}" 
                                               method="POST" 
-                                              onsubmit="return confirm('Hapus produk ini?')">
+                                              class="d-inline"
+                                              onsubmit="return confirm('Hapus produk ini dari katalog permanen?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="action-btn btn-delete-soft" title="Hapus">
-                                                <i class="fas fa-trash-alt"></i>
+                                            <button type="submit" class="btn btn-action-delete d-flex align-items-center">
+                                                <i class="bi bi-trash3 me-1"></i> HAPUS
                                             </button>
                                         </form>
                                     </div>
@@ -208,8 +307,10 @@
                         @empty
                             <tr>
                                 <td colspan="7" class="text-center py-5">
-                                    <i class="fas fa-box-open fa-3x text-light mb-3"></i>
-                                    <p class="text-muted">Belum ada produk dalam katalog Anda.</p>
+                                    <div class="text-muted py-4">
+                                        <i class="bi bi-box-seam display-4 mb-3 d-block" style="opacity: 0.3;"></i>
+                                        <p class="label-xs">Katalog produk belum tersedia</p>
+                                    </div>
                                 </td>
                             </tr>
                         @endforelse

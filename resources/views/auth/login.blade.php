@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <style>
         :root {
@@ -146,6 +147,75 @@
             font-weight: 300;
         }
 
+        /* Password Toggle Button */
+        .password-input-group {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 0;
+            bottom: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--grey);
+            font-size: 18px;
+            padding: 0;
+            width: auto;
+            margin: 0;
+            transition: color 0.3s;
+        }
+
+        .toggle-password:hover {
+            color: var(--accent);
+        }
+
+        /* Error Alert Styling */
+        .alert {
+            padding: 14px 16px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            animation: slideDown 0.3s ease-in-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-error {
+            background-color: #fee5e5;
+            border-left: 4px solid #dc3545;
+            color: #721c24;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+            color: #155724;
+        }
+
+        .error-text {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+            font-weight: 500;
+            display: block;
+        }
+
+        input.input-error {
+            border-bottom-color: #dc3545 !important;
+        }
+
         /* Button Styling */
         button {
             width: 100%;
@@ -214,26 +284,55 @@
             <form method="POST" action="{{ route('login') }}">
                 @csrf
 
-                <div class="input-group">
-                    <label>Email Address</label>
-                    <input type="email" name="email" placeholder="Masukan Email Anda" required autofocus>
-                </div>
+                {{-- Error Alert --}}
+                @if ($errors->any())
+                    <div class="alert alert-error">
+                        <i class="bi bi-exclamation-circle"></i>
+                        {{ $errors->first('email') ?? $errors->first() }}
+                    </div>
+                @endif
 
                 <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" name="email" placeholder="Masukan Email Anda" value="{{ old('email') }}" required autofocus class="{{ $errors->has('email') ? 'input-error' : '' }}">
+                </div>
+
+                <div class="input-group password-input-group">
                     <label>Security Key</label>
-                    <input type="password" name="password" placeholder="Masukan Password" required>
+                    <input type="password" id="password" name="password" placeholder="Masukan Password" required class="{{ $errors->has('password') ? 'input-error' : '' }}">
+                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility()" title="Tampilkan/Sembunyikan Password">
+                        <i class="bi bi-eye-fill" id="passwordIcon"></i>
+                    </button>
                 </div>
 
                 <button type="submit">Sign In</button>
 
                 <div class="footer-link">
                     Don't have an account?
-                    <a href="{{ route('register') }}">Create Account</a>
+                    <a href="{{ route('register') }}">Buat Akun</a>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+
+<script>
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById('password');
+        const passwordIcon = document.getElementById('passwordIcon');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            passwordIcon.classList.remove('bi-eye-fill');
+            passwordIcon.classList.add('bi-eye-slash-fill');
+        } else {
+            passwordInput.type = 'password';
+            passwordIcon.classList.remove('bi-eye-slash-fill');
+            passwordIcon.classList.add('bi-eye-fill');
+        }
+    }
+</script>
 
 </body>
 </html>

@@ -232,6 +232,14 @@
                     <a href="{{ route('admin.transaksi.index') }}" class="{{ request()->routeIs('admin.transaksi.index') ? 'active' : '' }}">
                         <i class="bi bi-receipt"></i> Semua Transaksi
                     </a>
+                    <a href="{{ route('admin.transaksi.payment-proofs') }}" class="{{ request()->routeIs('admin.transaksi.payment-proofs') ? 'active' : '' }}">
+                        <i class="bi bi-file-earmark-check"></i> Verifikasi Bukti Transfer
+                    </a>
+
+                    <div class="menu-title">Pengiriman</div>
+                    <a href="{{ route('admin.pengiriman.index') }}" class="{{ request()->routeIs('admin.pengiriman.*') ? 'active' : '' }}">
+                        <i class="bi bi-geo-alt-fill"></i> Kelola Pengiriman
+                    </a>
 
                     <div class="menu-title">Laporan</div>
                     <a href="{{ route('admin.reports.sales') }}" class="{{ request()->routeIs('admin.reports.sales') ? 'active' : '' }}">
@@ -258,6 +266,27 @@
                     <span class="fw-bold" style="color: var(--dark);">{{ Auth::user()->name }}</span>
                 </div>
             </div>
+
+            {{-- Flash Message Notification --}}
+            @if($message = Session::get('success'))
+            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert" style="background: #e6fcf5; border: 1px solid #0ca678; color: #0ca678; border-radius: 12px;">
+                <div style="display: flex; align-items: center; gap: 10px; font-weight: 600;">
+                    <i class="bi bi-check-circle-fill" style="font-size: 18px;"></i>
+                    {{ $message }}
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+
+            @if($message = Session::get('error'))
+            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert" style="background: #ffe6e6; border: 1px solid #ff4d4d; color: #ff4d4d; border-radius: 12px;">
+                <div style="display: flex; align-items: center; gap: 10px; font-weight: 600;">
+                    <i class="bi bi-x-circle-fill" style="font-size: 18px;"></i>
+                    {{ $message }}
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
 
             <div class="main-card">
                 @yield('content')

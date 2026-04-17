@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('suppliers', function (Blueprint $table) {
-           $table->text('address')->nullable();
+        Schema::create('shipping_cities', function (Blueprint $table) {
+            $table->id();
+            $table->string('city_name');
+            $table->integer('shipping_cost');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('suppliers', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('shipping_cities');
     }
 };

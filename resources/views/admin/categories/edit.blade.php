@@ -98,7 +98,7 @@
 <div class="container-fluid py-4">
     
     <div class="header-section">
-        <h1 class="header-title">Edit Category</h1>
+        <h1 class="header-title">Edit Kategori</h1>
         <p class="text-muted small fw-bold" style="letter-spacing: 1px;">Refine your collection categories</p>
     </div>
 

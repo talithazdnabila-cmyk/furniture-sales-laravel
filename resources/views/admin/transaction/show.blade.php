@@ -109,24 +109,143 @@
 
         body {
             background-color: #fff !important;
-            font-size: 12px;
+            font-size: 11px;
+            line-height: 1.3;
+            margin: 0;
+            padding: 0;
         }
 
         .page-title {
-            font-size: 20px;
-            margin-bottom: 20px;
+            font-size: 18px;
+            margin-bottom: 10px;
         }
 
-        /* Pastikan background warna badge tetap tercetak (untuk beberapa browser) */
+        /* Compact details */
+        .detail-section {
+            padding: 12px 15px !important;
+            border-bottom: 1px solid #f0f0f0 !important;
+            margin-bottom: 0 !important;
+        }
+
+        .detail-row {
+            margin-bottom: 8px !important;
+        }
+
+        .detail-label {
+            font-size: 10px !important;
+        }
+
+        .detail-value {
+            font-size: 12px !important;
+            margin-top: 2px !important;
+        }
+
+        .row {
+            margin: 0 !important;
+        }
+
+        .col-6, .col-5, .col-7, .col-8, .col-4 {
+            padding: 0 !important;
+        }
+
+        .col-6:not(:last-child) {
+            padding-right: 15px !important;
+        }
+
+        /* Table kompact */
+        table {
+            width: 100% !important;
+            border-collapse: collapse !important;
+        }
+
+        thead {
+            background: #fafafa !important;
+        }
+
+        th, td {
+            padding: 6px 8px !important;
+            font-size: 10px !important;
+            border: 1px solid #e0e0e0 !important;
+        }
+
+        thead th {
+            padding: 8px !important;
+        }
+
+        /* Signature section */
+        .mt-5 {
+            margin-top: 15px !important;
+        }
+
+        .mb-5 {
+            margin-bottom: 5px !important;
+        }
+
+        /* Pastikan background warna badge tetap tercetak */
         .status-badge {
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
             border: 1px solid #ccc;
+            padding: 4px 8px !important;
         }
 
         .trx-code {
             background: #eee !important;
             -webkit-print-color-adjust: exact;
+            padding: 4px 6px !important;
+        }
+
+        .mb-3 { margin-bottom: 6px !important; }
+        .mb-2 { margin-bottom: 4px !important; }
+        .mb-0 { margin-bottom: 0 !important; }
+        .mt-2 { margin-top: 4px !important; }
+        .mt-5 { margin-top: 10px !important; }
+        
+        .d-flex {
+            gap: 0 !important;
+        }
+
+        .text-end {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        h6 {
+            font-size: 12px !important;
+            font-weight: 700 !important;
+            margin: 0 !important;
+        }
+
+        h2 {
+            font-size: 24px !important;
+            margin: 0 !important;
+        }
+
+        h5 {
+            font-size: 13px !important;
+            margin: 0 !important;
+        }
+
+        p {
+            margin: 0 !important;
+        }
+
+        /* Page break handling */
+        .d-none.d-print-block {
+            display: block !important;
+            page-break-before: avoid;
+        }
+
+        /* Prevent orphans and widows */
+        table {
+            page-break-inside: avoid;
+        }
+
+        .detail-section {
+            page-break-inside: avoid;
         }
     }
 </style>
@@ -139,6 +258,16 @@
             <p class="text-muted small m-0">Invoice Resmi ZADA.CO</p>
         </div>
         <div class="d-flex gap-2">
+            {{-- Tombol Selesai (hanya muncul jika status = shipped) --}}
+            @if($transaksi->status == 'shipped')
+                <form action="{{ route('admin.transaksi.selesai', $transaksi->id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    <button type="submit" class="btn-print" style="background: var(--zada-gold); color: var(--zada-dark);">
+                        <i class="fas fa-check me-2"></i> Tanda Terima
+                    </button>
+                </form>
+            @endif
+            
             <button onclick="window.print()" class="btn-print">
                 <i class="fas fa-print me-2"></i> Cetak Invoice
             </button>
@@ -204,6 +333,48 @@
             </div>
         </div>
 
+        {{-- INFORMASI PENGIRIMAN --}}
+        <div class="detail-section">
+            <div class="row">
+                <div class="col-6">
+                    <h6 class="mb-3" style="font-weight: 700;">Informasi Pengiriman</h6>
+                    <span class="detail-label d-block">Penerima</span>
+                    <p class="detail-value mb-2">{{ $transaksi->nama_penerima ?? '-' }}</p>
+                    
+                    <span class="detail-label d-block">Nomor Telepon</span>
+                    <p class="detail-value mb-2">{{ $transaksi->no_telepon ?? '-' }}</p>
+                    
+                    <span class="detail-label d-block">Alamat Tujuan</span>
+                    <p class="detail-value mb-2">{{ $transaksi->alamat ?? '-' }}</p>
+
+                    @if($transaksi->catatan)
+                    <span class="detail-label d-block">Catatan</span>
+                    <p class="detail-value mb-0" style="font-style: italic;">{{ $transaksi->catatan }}</p>
+                    @endif
+                </div>
+                <div class="col-6 text-end">
+                    <h6 class="mb-3" style="font-weight: 700;">Biaya Pengiriman</h6>
+                    <span class="detail-label d-block">Ongkos Kirim</span>
+                    <p class="detail-value mb-3" style="font-size: 20px; color: var(--zada-gold);">
+                        Rp {{ number_format($transaksi->shipping_cost ?? 0, 0, ',', '.') }}
+                    </p>
+
+                    <span class="detail-label d-block">Status Pengiriman</span>
+                    <div class="detail-value mt-2">
+                        @if($transaksi->status == 'pending')
+                            <span class="badge bg-warning-subtle text-warning border border-warning px-3 py-2 rounded-pill">Pending</span>
+                        @elseif($transaksi->status == 'shipped')
+                            <span class="badge bg-info-subtle text-info border border-info px-3 py-2 rounded-pill">Dikirim</span>
+                        @elseif($transaksi->status == 'rejected')
+                            <span class="badge bg-danger-subtle text-danger border border-danger px-3 py-2 rounded-pill">Ditolak</span>
+                        @else
+                            <span class="badge bg-success-subtle text-success border border-success px-3 py-2 rounded-pill">Selesai</span>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="detail-section p-0">
             <table class="table mb-0">
                 <thead style="background: #fafafa;">
@@ -243,9 +414,17 @@
                 </div>
                 <div class="col-5">
                     <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="detail-label">Subtotal</span>
+                        <span class="detail-value">Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3" style="padding-bottom: 10px; border-bottom: 1px solid #e0e0e0;">
+                        <span class="detail-label">Ongkos Kirim</span>
+                        <span class="detail-value">Rp {{ number_format($transaksi->shipping_cost ?? 0, 0, ',', '.') }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
                         <span class="detail-label">Grand Total</span>
                         <span class="detail-value" style="font-size: 22px; color: var(--zada-gold);">
-                            Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}
+                            Rp {{ number_format($transaksi->grand_total, 0, ',', '.') }}
                         </span>
                     </div>
                 </div>

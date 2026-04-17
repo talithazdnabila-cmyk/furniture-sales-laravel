@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\ShippingCity;
 use App\Models\Product;
 
 class CheckoutController extends Controller
@@ -14,12 +15,13 @@ class CheckoutController extends Controller
    public function index(Request $request, $productId)
 {
     $product = Product::find($productId);
+    $cities = ShippingCity::all();
 
     $checkout = [
         'qty' => $request->qty ?? 1
     ];
 
-    return view('user.checkout.index', compact('product', 'checkout'));
+    return view('user.checkout.index', compact('product', 'checkout', 'cities'));
 }
 
     

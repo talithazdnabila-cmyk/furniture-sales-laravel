@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>@yield('title', 'User')</title>
+    
+    {{-- Google Fonts & Icons --}}
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <style>
         :root {
@@ -20,9 +24,9 @@
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background: var(--bg);
-            color: var(--text);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #1e1b18;
+            color: #f4f1ee;
             line-height: 1.6;
             overflow-x: hidden;
         }
@@ -33,34 +37,67 @@
             top: 0;
             left: 0;
             right: 0;
-            padding: 16px 80px;
+            padding: 20px 80px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(0, 0, 0, 0.55);
-            backdrop-filter: blur(10px);
+            background: rgba(30, 27, 24, 0.8);
+            backdrop-filter: blur(15px);
             color: white;
             z-index: 100;
+            border-bottom: 1px solid rgba(232, 184, 109, 0.2);
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .back-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.6);
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            padding: 0;
+            margin-right: 10px;
+            transition: .3s;
+        }
+
+        .back-btn:hover {
+            color: #e8b86d;
+        }
+
+        .brand-box .main-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #fff;
         }
 
         .nav-menu {
             list-style: none;
             display: flex;
             align-items: center;
-            gap: 28px;
+            gap: 35px;
+            margin: 0;
         }
 
         .navbar a {
-            color: white;
+            color: rgba(255,255,255,0.6);
             text-decoration: none;
-            font-size: 14px;
-            opacity: .9;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
             transition: .3s;
         }
 
         .navbar a:hover {
-            opacity: 1;
-            color: var(--accent);
+            color: #e8b86d;
         }
 
         .btn {
@@ -79,18 +116,21 @@
         }
 
         .logout-btn {
-            background: none;
-            border: none;
-            color: white;
+            background: transparent;
+            border: 1px solid #e8b86d;
+            color: #e8b86d;
+            padding: 8px 18px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 14px;
-            opacity: .85;
+            font-weight: 700;
+            font-size: 11px;
+            text-transform: uppercase;
             transition: .3s;
         }
 
         .logout-btn:hover {
-            color: var(--accent);
-            opacity: 1;
+            background: #e8b86d;
+            color: #1e1b18;
         }
 
         /* ================= HERO ================= */
@@ -102,6 +142,7 @@
             position: relative;
             display: flex;
             align-items: center;
+            margin-top: 70px;
         }
 
         .hero::after {
@@ -188,6 +229,31 @@
     </style>
 </head>
 <body>
+
+    <nav class="navbar">
+        <div class="navbar-left">
+            <button class="back-btn" onclick="history.back()" title="Kembali">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+            <div class="brand-box">
+                <div class="main-logo">ZADA<span style="color:var(--accent)">.CO</span></div>
+                <div style="font-size: 9px; letter-spacing: 3px; text-transform: uppercase; opacity: 0.6;">Timeless Elegance</div>
+            </div>
+        </div>
+        
+        <ul class="nav-menu">
+            <li><a href="{{ route('user.dashboard') }}">Home</a></li>
+            <li><a href="{{ route('user.products') }}">Koleksi</a></li>
+            <li><a href="{{ route('cart.index') }}">Keranjang</a></li>
+            <li><a href="{{ route('user.transactions.index') }}">Pesanan Saya</a></li>
+            <li>
+                <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
+                    @csrf
+                    <button type="submit" class="logout-btn">KELUAR</button>
+                </form>
+            </li>
+        </ul>
+    </nav>
 
     @yield('content')
 

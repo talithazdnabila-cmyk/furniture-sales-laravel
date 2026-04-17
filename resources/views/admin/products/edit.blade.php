@@ -132,6 +132,19 @@
                         </select>
                     </div>
 
+                    {{-- SUPPLIER --}}
+                    <div class="col-md-6">
+                        <label class="form-label">Supplier</label>
+                        <select name="supplier_id" class="form-select-zada w-100" required>
+                            @foreach ($suppliers as $supplier)
+                                <option value="{{ $supplier->id }}"
+                                    {{ $product->supplier_id == $supplier->id ? 'selected' : '' }}>
+                                    {{ $supplier->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     {{-- NAMA --}}
                     <div class="col-md-6">
                         <label class="form-label">Product Name</label>

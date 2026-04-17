@@ -13,13 +13,14 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Ambil data untuk grafik (12 bulan terakhir)
+        // Ambil data untuk grafik (12 bulan terakhir) - exclude pending
         $grafikPenjualan = Transaction::select(
                 DB::raw('MONTH(created_at) as bulan'),
                 DB::raw('YEAR(created_at) as tahun'),
                 DB::raw('SUM(grand_total) as total_penjualan')
             )
             ->where('created_at', '>=', now()->subMonths(12))
+            ->where('status', '!=', 'pending')
             ->groupBy(DB::raw('YEAR(created_at), MONTH(created_at)'))
             ->orderBy(DB::raw('YEAR(created_at), MONTH(created_at)'))
             ->get();
@@ -54,6 +55,17 @@ class DashboardController extends Controller
                 ];
             });
 
+        // Data pengiriman
+        $pengirimanPending = Transaction::where('status', 'pending')->count();
+        $pengirimanDikirim = Transaction::where('status', 'shipped')->count();
+        $pengirimanSelesai = Transaction::where('status', 'completed')->count();
+
+        // Pengiriman terbaru dengan detail
+        $pengirimanTerbaru = Transaction::with('user')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
         return view('admin.dashboard', [
             'totalProduk' => Product::count(),
 
@@ -71,7 +83,13 @@ class DashboardController extends Controller
 
             // data untuk chart
             'labelBulan' => $labelBulan,
-            'dataPenjualan' => $dataPenjualan
+            'dataPenjualan' => $dataPenjualan,
+
+            // Data pengiriman
+            'pengirimanPending' => $pengirimanPending,
+            'pengirimanDikirim' => $pengirimanDikirim,
+            'pengirimanSelesai' => $pengirimanSelesai,
+            'pengirimanTerbaru' => $pengirimanTerbaru,
         ]);
     }
 }

@@ -12,7 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->bigInteger('grand_total')->default(0);
+            // Drop kolom ongkir yang sudah tidak digunakan
+            // Sekarang menggunakan shipping_cost
+            if (Schema::hasColumn('transactions', 'ongkir')) {
+                $table->dropColumn('ongkir');
+            }
         });
     }
 
@@ -22,7 +26,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('transactions', function (Blueprint $table) {
-            //
+            // Restore kolom ongkir saat rollback
+            $table->integer('ongkir')->default(0)->after('shipping_cost');
         });
     }
 };

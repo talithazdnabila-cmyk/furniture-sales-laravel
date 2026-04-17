@@ -20,7 +20,13 @@ class Transaction extends Model
         'user_id',
         'total_harga',
         'grand_total',
-        'status'
+        'status',
+        'city_id',
+        'shipping_cost',
+        'kota',
+        'payment_proof',
+        'payment_proof_status',
+        'payment_proof_note'
     ];
 
     public function details()
@@ -31,5 +37,10 @@ class Transaction extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(ShippingCity::class, 'city_id');
     }
 }

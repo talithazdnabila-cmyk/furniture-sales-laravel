@@ -4,60 +4,56 @@
 
 @section('content')
 
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-
 <style>
     :root {
-        --zada-gold: #c2a35d;
+        --zada-gold: #c5a059;
         --zada-dark: #1a1a1a;
-        --zada-border: #f0f0f0;
+        --border-color: #eceef0;
+        --bg-body: #f8f9fa;
     }
 
-    body {
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        background-color: #fcfcfc;
+    body { 
+        background-color: var(--bg-body); 
+        color: #333; 
+        font-family: 'Inter', sans-serif; 
     }
 
-    /* Transition halus untuk semua elemen */
-    * { transition: all 0.3s ease; }
-
-    .profile-header {
-        font-family: 'Playfair Display', serif;
-        font-weight: 700;
-        font-size: 2rem;
-        color: var(--zada-dark);
-        margin-bottom: 2rem;
+    /* Typography Match Dashboard */
+    .profile-header-title { 
+        font-family: 'Playfair Display', serif; 
+        font-weight: 700; 
+        color: var(--zada-dark); 
     }
 
-    .card-luxury {
-        background: #ffffff;
-        border: 1px solid var(--zada-border);
-        border-radius: 20px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.01);
+    .card-pro {
+        background: white; 
+        border: 1px solid var(--border-color);
+        border-radius: 12px; 
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
 
-    /* Avatar: Hanya scale sangat halus saat hover */
-    .avatar-wrapper {
+    /* Avatar Styling */
+    .avatar-container {
         position: relative;
-        width: 120px;
-        height: 120px;
-        margin: 0 auto 2rem;
+        display: inline-block;
+        padding: 5px;
+        border: 1px solid var(--border-color);
+        border-radius: 50%;
+        background: white;
     }
 
-    .avatar-wrapper:hover {
-        transform: scale(1.03);
-    }
-
-    .avatar-preview, .avatar-placeholder {
-        width: 120px;
-        height: 120px;
+    .avatar-main {
+        width: 110px;
+        height: 110px;
         border-radius: 50%;
         object-fit: cover;
-        border: 4px solid #fff;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
     }
 
-    .avatar-placeholder {
+    .avatar-placeholder-pro {
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
         background: var(--zada-dark);
         color: var(--zada-gold);
         display: flex;
@@ -65,109 +61,119 @@
         justify-content: center;
         font-size: 2.5rem;
         font-weight: 700;
+        font-family: 'Playfair Display', serif;
     }
 
-    .form-label {
-        font-size: 0.75rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: #999;
+    /* Form Styling Match */
+    .label-xs { 
+        font-size: 11px; 
+        text-transform: uppercase; 
+        letter-spacing: 0.8px; 
+        font-weight: 700; 
+        color: #888; 
         margin-bottom: 8px;
+        display: block;
     }
 
-    .form-control-zada {
-        background-color: #f9f9f9;
-        border: 1px solid #eee;
-        border-radius: 12px;
-        padding: 12px 18px;
-        font-size: 0.95rem;
+    .form-control-pro {
+        background-color: #fbfbfc;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 12px 15px;
+        font-size: 13.5px;
+        color: var(--zada-dark);
+        transition: all 0.2s;
     }
 
-    /* Focus: Hanya perubahan warna border & sedikit bayangan */
-    .form-control-zada:focus {
+    .form-control-pro:focus {
         background-color: #fff;
         border-color: var(--zada-gold);
-        box-shadow: 0 5px 15px rgba(194, 163, 93, 0.08);
+        box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.1);
         outline: none;
     }
 
-    .btn-update {
+    /* Button Match Quick Actions */
+    .btn-save-pro {
         background: var(--zada-dark);
         color: white;
         border: none;
-        border-radius: 12px;
-        padding: 14px 30px;
-        font-weight: 600;
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
         width: 100%;
+        transition: all 0.3s;
     }
 
-    /* Hover: Perubahan warna solid & angkat sedikit */
-    .btn-update:hover {
+    .btn-save-pro:hover {
         background: var(--zada-gold);
-        transform: translateY(-2px);
+        transform: translateY(-1px);
     }
 
-    .alert-zada {
+    .status-pill-alert {
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
         background: #f0fdf4;
         color: #166534;
-        border-radius: 15px;
-        border: none;
-        padding: 15px 20px;
-        font-weight: 600;
-        margin-bottom: 2rem;
+        border: 1px solid #bbf7d0;
     }
 </style>
 
-<div class="container py-5">
+<div class="container py-4">
     <div class="row justify-content-center">
-        <div class="col-lg-6 col-md-8">
+        <div class="col-lg-5 col-md-8">
             
-            <h1 class="profile-header">Settings</h1>
+            {{-- HEADER SEPERTI DASHBOARD --}}
+            <div class="mb-4">
+                <h3 class="profile-header-title m-0">Pengaturan Profil</h3>
+                <p class="text-muted small">Kelola identitas akses administrator Anda</p>
+            </div>
 
-            @if(session('success'))
-                <div class="alert alert-zada d-flex align-items-center">
-                    <i class="bi bi-check-circle-fill me-3"></i>
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            <div class="card card-luxury">
+            <div class="card card-pro">
                 <div class="card-body p-4 p-md-5">
                     <form action="{{ route('admin.profile.update') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
-                        <div class="text-center">
-                            <div class="avatar-wrapper">
+                        <div class="text-center mb-5">
+                            <div class="avatar-container">
                                 @if(Auth::user()->photo)
-                                    <img src="/admin_photo/{{ Auth::user()->photo }}" class="avatar-preview" id="preview">
+                                    <img src="/admin_photo/{{ Auth::user()->photo }}" class="avatar-main" id="preview">
                                 @else
-                                    <div class="avatar-placeholder">
+                                    <div class="avatar-placeholder-pro" id="preview-placeholder">
                                         {{ substr(Auth::user()->name, 0, 1) }}
                                     </div>
                                 @endif
+                            </div>
+                            <div class="mt-3">
+                                <h6 class="fw-bold m-0">{{ Auth::user()->name }}</h6>
+                                <p class="text-muted small">Administrator Sistem</p>
                             </div>
                         </div>
 
                         <div class="row g-4">
                             <div class="col-12">
-                                <label class="form-label">Full Name</label>
-                                <input type="text" name="name" class="form-control-zada w-100" value="{{ Auth::user()->name }}">
+                                <label class="label-xs">Nama Lengkap</label>
+                                <input type="text" name="name" class="form-control-pro w-100" value="{{ Auth::user()->name }}" placeholder="Masukkan nama lengkap">
                             </div>
 
                             <div class="col-12">
-                                <label class="form-label">Email Address</label>
-                                <input type="email" name="email" class="form-control-zada w-100" value="{{ Auth::user()->email }}">
+                                <label class="label-xs">Alamat Email</label>
+                                <input type="email" name="email" class="form-control-pro w-100" value="{{ Auth::user()->email }}" placeholder="nama@zada.co">
                             </div>
 
                             <div class="col-12">
-                                <label class="form-label">Update Photo</label>
-                                <input type="file" name="photo" class="form-control-zada w-100" id="photoInput">
+                                <label class="label-xs">Unggah Foto Profil</label>
+                                <input type="file" name="photo" class="form-control-pro w-100" id="photoInput" style="padding: 8px;">
+                                <small class="text-muted mt-2 d-block" style="font-size: 10px;">Rekomendasi: Persegi (1:1), Maks 2MB</small>
                             </div>
 
                             <div class="col-12 mt-5">
-                                <button type="submit" class="btn-update">
-                                    Save Changes
+                                <button type="submit" class="btn-save-pro">
+                                    Simpan Perubahan
                                 </button>
                             </div>
                         </div>
@@ -176,7 +182,9 @@
             </div>
 
             <div class="text-center mt-4">
-                <a href="#" class="text-muted small text-decoration-none hover-gold">Privacy & Security Settings</a>
+                <a href="#" class="text-muted small text-decoration-none" style="font-size: 11px; font-weight: 600; letter-spacing: 0.5px;">
+                    <i class="bi bi-shield-lock me-1"></i> KEAMANAN & ENKRIPSI DATA
+                </a>
             </div>
 
         </div>
@@ -188,7 +196,18 @@
         const [file] = document.getElementById('photoInput').files
         if (file) {
             const preview = document.getElementById('preview');
-            if(preview) preview.src = URL.createObjectURL(file);
+            const placeholder = document.getElementById('preview-placeholder');
+            
+            if(preview) {
+                preview.src = URL.createObjectURL(file);
+            } else if(placeholder) {
+                // Jika sebelumnya placeholder, ganti jadi tag img
+                const newImg = document.createElement('img');
+                newImg.src = URL.createObjectURL(file);
+                newImg.className = 'avatar-main';
+                newImg.id = 'preview';
+                placeholder.parentNode.replaceChild(newImg, placeholder);
+            }
         }
     }
 </script>
